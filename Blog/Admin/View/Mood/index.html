@@ -1,0 +1,121 @@
+<extend name="Index/index" />
+<block name="content">
+	<div class="container">
+
+		<div class="card">
+			<div class="card-header">
+				<h2>心情列表</h2>
+			</div>
+
+			<div class="card-body card-padding">
+				<div id="data-table-basic-header" class="bootgrid-header container-fluid">
+					<table id="data-table-basic" class="table table-striped bootgrid-table" aria-busy="false">
+						<thead>
+							<tr>
+								<th data-column-id="id" class="text-left" style="">
+									<a href="javascript:void(0);" class="column-header-anchor sortable"><span class="text">ID</span><span class="zmdi icon "></span></a>
+								</th>
+								<th data-column-id="sender" class="text-left" style="">
+									<a href="javascript:void(0);" class="column-header-anchor sortable"><span class="text">标题</span><span class="zmdi icon "></span></a>
+								</th>
+								<th data-column-id="received" class="text-left" style="">
+									<a href="javascript:void(0);" class="column-header-anchor sortable"><span class="text">详情</span><span class="zmdi icon zmdi-expand-more"></span></a>
+								</th>
+								<th data-column-id="received" class="text-left" style="">
+									<a href="javascript:void(0);" class="column-header-anchor sortable"><span class="text">发布时间</span><span class="zmdi icon zmdi-expand-more"></span></a>
+								</th>
+								<th data-column-id="received" class="text-left" style="">
+									<a href="javascript:void(0);" class="column-header-anchor sortable"><span class="text">操作</span><span class="zmdi icon zmdi-expand-more"></span></a>
+								</th>
+							</tr>
+						</thead>
+						<tbody id="tbody">
+							<if condition="$data">
+							<volist name="data" id="v">
+								<tr data-id = "{$v['id']}">
+									<td>{$v['id']}</td>
+									<td>{$v['title']}</td>
+									<td>{$v['details']}</td>
+									<td>{$v['insert_at']}</td>
+									<td>
+										<button class="btn btn-primary btn-xs waves-effect modify" data-id="{$v['id']}">修改</button>
+										<button class="btn btn-xs btn-danger waves-effect del" data-id="{$v['id']}">删除</button>
+									</td>
+								</tr>
+							</volist>
+							<else />
+								<tr>暂无数据</tr>
+							</if>
+						</tbody>
+					</table>
+				</div>
+				<div id="data-table-basic-footer" class="bootgrid-footer container-fluid">
+					<div class="row">
+						<div class="col-sm-6">
+							<ul class="pagination">
+								<!--<li class="first disabled" aria-disabled="true">
+									<a data-page="first" class="button"><i class="zmdi zmdi-more-horiz"></i></a>
+								</li>
+								<li class="prev disabled" aria-disabled="true">
+									<a data-page="prev" class="button"><i class="zmdi zmdi-chevron-left"></i></a>
+								</li>-->
+								<for start="1" end="$total+1">
+									<li class="page-{$i}" aria-disabled="false" aria-selected="true">
+										<a data-page="{$i}" data-id="{$i}" class="button">{$i}</a>
+									</li>
+								</for>
+								<!--<li class="next" aria-disabled="false">
+									<a data-page="next" class="button"><i class="zmdi zmdi-chevron-right"></i></a>
+								</li>
+								<li class="last" aria-disabled="false">
+									<a data-page="last" class="button"><i class="zmdi zmdi-more-horiz"></i></a>
+								</li>-->
+							</ul>
+						</div>
+						<!--<div class="col-sm-6 infoBar">
+							<div class="infos">Showing 1 to 10 of 20 entries</div>
+						</div>-->
+					</div>
+				</div>
+			</div>
+		</div>
+</block>
+<block name='js_code'>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$(".page-1").addClass('active');
+			$(".pagination").on('click','li',function(ev){
+				$(this).addClass('active').siblings().removeClass('active');
+				var page = ev.target.dataset.id;
+				$.get("__CONTROLLER__/ajax?p="+page, function(data){
+					var html = "";
+					for (let i=0; i<data.length; i++) {
+						html += "<tr>"+
+							"<td>"+data[i].id+"</td>"+
+							"<td>"+data[i].title+"</td>"+
+							"<td>"+data[i].details+"</td>"+
+							"<td>"+data[i]['insert_at']+"</td>"+
+							'<td><button class="btn btn-primary btn-xs waves-effect modify data-id="'+data[i].id+'">修改</button> '+
+								'<button class="btn btn-xs btn-danger waves-effect del" data-id="'+data[i].id+'">删除</button>'+
+							"</td></tr>";
+					}
+					$("#tbody").html(html);
+				})
+			})
+			
+			$("table").on('click', '.modify', function(ev){
+				var id = ev.target.dataset.id;
+				location.href = "__CONTROLLER__/edit?id="+id;
+			})
+			$("table").on('click', '.del', function(ev){
+				var id = ev.target.dataset.id;
+				$.get("__CONTROLLER__/del?id="+id, function(data){
+					if (data == "success") {
+						alert('删除成功');
+						location.reload();
+					}
+				})
+			})
+		})
+	</script>
+</block>

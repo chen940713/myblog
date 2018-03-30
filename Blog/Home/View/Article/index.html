@@ -1,0 +1,71 @@
+<extend name="Index/index" />
+<block name='nav4'>layui-this</block>
+<block name='main'>
+<div class="layui-col-md8">
+  <div class="fly-panel" style="margin-bottom: 0;">
+
+    <div class="fly-panel-title fly-filter">
+      <span class="fly-filter-right layui-hide-xs">
+        <a href="{:U('Article/index?t=news')}" class="<if condition='$ac eq "news"'>layui-this</if>">按最新</a>
+        <span class="fly-mid"></span>
+        <a href="{:U('Article/index?t=hot')}" class="<if condition='$ac eq "hot"'>layui-this</if>">按热议</a>
+      </span>
+    </div>
+
+    <ul class="fly-list">
+    	<foreach name='article' item='v'>
+      <li>
+        <a href="user/home.html" class="fly-avatar">
+          <img src="https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg" alt="user">
+        </a>
+        <h2>
+          <a class="layui-badge">动态</a>
+          <a href="{:U('Article/detail',array('id'=>$v['id']))}">{$v['title']}</a>
+        </h2>
+        <div class="fly-list-info">
+          <a href="user/home.html" link>
+            <cite>{$v['author']}</cite>
+          </a>
+          <span>{$v['insert_at']}</span>
+          <span class="fly-list-nums">
+            <i class="iconfont icon-liulanyanjing" title="浏览"></i> {$v['click_num']}
+            <i class="iconfont icon-pinglun1" title="回答"></i> 0
+          </span>
+        </div>
+        <div class="fly-list-badge">
+        	<if condition="$v['click_num'] gt 8000">
+        		<span class="layui-badge layui-bg-red">精帖</span>
+        	</if>
+        	<if condition="$v['click_num'] lt 1000">
+        		<span class="layui-badge layui-bg-green">新帖</span>
+        	</if>
+        </div>
+      </li>
+      </foreach>
+    </ul>
+
+    <!-- <div class="fly-none">没有相关数据</div> -->
+
+    <div style="text-align: center">
+      <div class="laypage-main">
+      	<if condition="$page gt 1">
+      		<a href="{:U('Article/index',array('t'=>$ac,'page'=>$page-1))}">上一页</a>
+       	 	<a href="{:U('Article/index',array('t'=>$ac,'page'=>1))}" title="首页">首页</a>
+      	</if>
+      	<for start="1" end="$total+1">
+      		<if condition="$page neq $i">
+					<a href="{:U('Article/index',array('t'=>$ac,'page'=>$i))}">{$i}</a>
+					<else />
+					<span class="laypage-curr">{$i}</span>
+					</if>
+				</for>
+        <if condition="$page lt $total">
+        <a href="{:U('Article/index',array('t'=>$ac,'page'=>$total))}" title="尾页">尾页</a>
+        <a href="{:U('Article/index',array('t'=>$ac,'page'=>$page+1))}">下一页</a>
+        </if>
+      </div>
+    </div>
+
+  </div>
+</div>
+</block>

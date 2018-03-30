@@ -1,0 +1,47 @@
+<extend name="Index/index" />
+<block name='main'>
+<div class="fly-home fly-panel" style="background-image: url();">
+  <img src="__PUBLIC__/Admin/images/{$data.avatar}" alt="{$data.nickname}">
+  <h1>
+    {$data.nickname}
+  </h1>
+
+
+  <p class="fly-home-info">
+    <i class="iconfont icon-shijian"></i><span>{$time} 加入</span>
+    <i class="iconfont icon-chengshi"></i><span>来自杭州</span>
+  </p>
+
+  <p class="fly-home-sign">（人生仿若一场修行）</p>
+
+</div>
+<div class="layui-container">
+  <div class="layui-row layui-col-space15">
+    <div class="layui-col-md6 fly-home-jie">
+      <div class="fly-panel">
+        <h3 class="fly-panel-title">{$data.nickname} 最近的回复</h3>
+        <ul class="jie-row">
+        <foreach name='reply' item='v'>
+          <li>
+            <a href="{:U('Article/detail', array('id'=> $v['aid']))}" class="jie-title"> {$v['title']}</a><br />
+            <i>回复于 {$v['reply_at']}</i>
+            <em class="layui-hide-xs">{$v['click_num']}阅</em>
+          </li>
+        </foreach>
+          <!-- <div class="fly-none" style="min-height: 50px; padding:30px 0; height:auto;"><i style="font-size:14px;">没有发表任何求解</i></div> -->
+        </ul>
+      </div>
+    </div>
+    
+    <div class="layui-col-md6 fly-home-da">
+      <div class="fly-panel">
+        <h3 class="fly-panel-title">{$data.nickname} 最近动态</h3>
+        <ul class="home-jieda">
+           <div class="fly-none" style="min-height: 50px; padding:30px 0; height:auto;"><span>没有动态</span></div> 
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+</block>
+<block name='right'></block>

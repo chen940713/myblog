@@ -1,0 +1,27 @@
+<extend name="Index/index" />
+<block name='nav3'>layui-this</block>
+<block name='link'>
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/Home/css/H-ui.min.css"/>
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/Home/css/timeline.css"/>
+</block>
+<block name='main'>
+<section class="container mt-20">
+    <div class="container-fluid">
+        <div class="timeline"> 
+        	<foreach name='data' item='v'>
+			<div class="cd-timeline-block">
+			    <div class="cd-timeline-img cd-picture">
+			        <img src="__PUBLIC__/Home/css/timeline/cd-icon-location.svg" alt="position">
+			    </div>
+			    <div class="cd-timeline-content">
+			        <h4>{$v['title']}</h4>
+			        <p>{$v['details']}</p>
+			        <span class="cd-date">{$v['insert_at']}</span>
+			    </div>
+			</div>
+			</foreach>
+        </div>
+    </div>
+</section>
+</block>
+<block name='right'></block>

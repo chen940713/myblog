@@ -1,0 +1,59 @@
+<extend name="Index/index" />
+<block name='nav5'>layui-this</block>
+<block name='main'>
+<div class="layui-container fly-marginTop">
+  <div class="fly-panel" pad20 style="padding-top: 5px;">
+    <!--<div class="fly-none">没有权限</div>-->
+    <div class="layui-form layui-form-pane">
+      <div class="layui-tab layui-tab-brief" lay-filter="user">
+        <ul class="layui-tab-title">
+          <li class="layui-this">发表留言</li>
+        </ul>
+        <div class="layui-form layui-tab-content" id="LAY_ucm" style="padding: 20px 0;">
+          <div class="layui-tab-item layui-show">
+            <form action="{:U('User/domsg')}" method="post">
+            	<input type="hidden" name="uid" value="{$Think.session.userid}" />
+              <div class="layui-form-item layui-form-text">
+                <div class="layui-input-block">
+                  <textarea id="L_content" name="content" required lay-verify="required" placeholder="详细描述" class="layui-textarea fly-editor" style="height: 260px;"></textarea>
+                </div>
+              </div>
+              <div class="layui-form-item">
+                <button class="layui-btn" type="submit">立即发布</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="fly-panel" id="msg" pad20 style="padding-top: 5px;">
+  	<php>
+  		function traverseArray($array)  
+			{  
+			    foreach ($array as $v) {
+			        echo "<div class='comment' style='width: 95%;margin: 10px;background: #fff;padding: 10px 10px;border: 1px solid #D2D2D2;'>";
+			        echo "<p style='padding-bottom: 10px;'><img style='width: 40px; height: 40px;' src='__PUBLIC__/Admin/images/".$v['avatar']."'/> ".$v['nickname']."</p>";
+			        if($v['nickname'] != $_SESSION['username']){
+			        	echo "<p style='padding-left: 42px;'>".$v['content']."<button style='margin-left: 10px;' data-id='".$v['id']."' class='layui-btn layui-btn-primary layui-btn-xs reply'>回复</button></p>";
+			        }else{
+			        	echo "<p style='padding-left: 42px;'>".$v['content']."</p>";
+			        }
+			        if ($v['child']) {  
+			            traverseArray($v['child']);
+			        }  
+			        echo "</div>";  
+			    }
+			}
+			traverseArray($list);
+  	</php>
+  </div>
+</div>
+</block>
+<block name='right'></block>
+<block name='jscode'>
+		$("#msg").on('click', '.reply', function(ev){
+			var id = ev.target.dataset.id;
+			location.href = "__CONTROLLER__/replymsg?id="+id;
+		})
+</block>
